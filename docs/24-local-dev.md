@@ -12,6 +12,40 @@ pnpm dev                             # expo start --dev-client
 
 `pnpm dev` must land on **Vandaag with real fixture data and no login screen**. If a developer has to sign in to see a budget, the setup is broken.
 
+## 1a. Troubleshooting the first install
+
+### `Cannot find matching keyid: {"signatures":...}`
+
+Thrown by **corepack**, not by pnpm or by anything in this repo. Corepack verifies the pnpm
+tarball against npm-registry signing keys that are hardcoded in the corepack build bundled with
+your Node. npm has rotated those keys, so any Node older than the rotation ships a corepack that
+rejects the signature. The `packageManager` pin in `package.json` is what makes corepack fetch
+pnpm in the first place, which is why it surfaces here.
+
+Three fixes, in order of preference:
+
+```bash
+# 1. Real fix — replace Node's stale bundled corepack with a current one
+npm install -g corepack@latest
+corepack enable
+pnpm install
+
+# 2. Unblock now — skip corepack's signature check for this command
+COREPACK_INTEGRITY_KEYS=0 pnpm install
+
+# 3. Bypass corepack entirely — install pnpm directly
+npm install -g pnpm@10
+pnpm install
+```
+
+Option 1 is the one to prefer: it keeps the `packageManager` pin doing its job (everyone on the
+same pnpm) while fixing the actual cause. Option 2 disables a supply-chain integrity check, so
+use it to get moving and then do option 1. Option 3 ignores the pin, so a teammate can silently
+end up on a different pnpm major.
+
+If you are on a corporate registry or proxy, the same error can mean the mirror re-signs packages
+with a key npm does not publish — in that case set `COREPACK_NPM_REGISTRY` to the mirror.
+
 ## 2. Auth bypass (development only)
 
 Controlled by a single flag. It is **impossible** to enable in preview or production builds — the guard checks three independent conditions.
