@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "Kwartje",
+    "slug": "kwartje",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "kwartje",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "icon": "./assets/icon.png",
+    "splash": { "image": "./assets/splash-icon.png", "resizeMode": "contain", "backgroundColor": "#0E1116" },
+    "ios": {
+      "bundleIdentifier": "nl.kwartje.app",
+      "supportsTablet": false,
+      "associatedDomains": ["applinks:kwartje.nl"],
+      "infoPlist": { "NSFaceIDUsageDescription": "Om je financiële gegevens te beschermen." }
+    },
+    "android": {
+      "package": "nl.kwartje.app",
+      "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#0E1116" },
+      "intentFilters": [
+        { "action": "VIEW", "autoVerify": true, "category": ["BROWSABLE", "DEFAULT"],
+          "data": [{ "scheme": "https", "host": "kwartje.nl", "pathPrefix": "/bank" }] }
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-localization",
+      "expo-sqlite",
+      ["expo-local-authentication", { "faceIDPermission": "Om je financiële gegevens te beschermen." }]
+    ],
+    "experiments": { "typedRoutes": true },
+    "extra": { "router": {} }
+  }
+}
