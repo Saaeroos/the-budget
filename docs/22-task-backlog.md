@@ -6,24 +6,28 @@ Branch: `feat/KW-0xx-slug`. Commit: Conventional Commits.
 
 ---
 
+## Progress
+
+Ticked below: 17 of 70. Partially done and deliberately left open — **KW-011** (CI workflows not written), **KW-014/022/036** (schema and RLS landed, repositories and RPC wiring did not), **KW-022** (view + `rpc_current_period` exist, period roll not wired to the app).
+
 ## M0 — Foundation
 
-- [ ] **KW-001** Monorepo scaffold: pnpm workspaces, `apps/mobile`, `packages/shared`, `supabase/`, tsconfig base, ESLint flat config, Prettier, knip. → `13 §1`, `.claude/rules/*`
-- [ ] **KW-002** Expo app bootstrap with SDK 55, New Architecture, expo-router typed routes, `app.json` per `13 §1`. Blank Vandaag route renders.
-- [ ] **KW-003** Design tokens + `ThemeProvider` (light/dark/system) + `Text`, `Money`, `Button`, `Card` primitives. → `12 §2–§5`
-- [ ] **KW-004** i18n setup: i18next, `nl.json`/`en.json` skeleton, `formatEUR`, `formatDateNL`, `formatMoneyForSpeech`, lint rule banning literal strings in TSX. → `15`, `.claude/rules/text-and-types.md`
-- [ ] **KW-005** Supabase project + migrations 0001 (enums, households, profiles, members) with RLS + pgTAP. → `07 §1–§4`
-- [ ] **KW-006** Auth: email OTP + Apple + Google, `AuthProvider`, secure-store session, `AppLockGate`. → `16 §4`, `11 §1.2`
-- [ ] **KW-007** **Local dev auth bypass** + fixture seeding (`EXPO_PUBLIC_SKIP_AUTH`). → `24-local-dev.md`
-- [ ] **KW-008** SQLite + Drizzle mirror, `DatabaseProvider`, migrations on start, FTS5 index. → `13 §5`
-- [ ] **KW-009** react-query setup with MMKV persistence, key factories, repository pattern. → `13 §3–§4`
-- [ ] **KW-010** Outbox + `SyncProvider`: optimistic writes, flush, retry, conflict resolution. → `13 §6`, `06 §10`
+- [x] **KW-001** Monorepo scaffold: pnpm workspaces, `apps/mobile`, `packages/shared`, `supabase/`, tsconfig base, ESLint flat config, Prettier, knip. → `13 §1`, `.claude/rules/*`
+- [x] **KW-002** Expo app bootstrap with SDK 55, New Architecture, expo-router typed routes, `app.json` per `13 §1`. Blank Vandaag route renders.
+- [x] **KW-003** Design tokens + `ThemeProvider` (light/dark/system) + `Text`, `Money`, `Button`, `Card` primitives. → `12 §2–§5`
+- [x] **KW-004** i18n setup: i18next, `nl.json`/`en.json` skeleton, `formatEUR`, `formatDateNL`, `formatMoneyForSpeech`, lint rule banning literal strings in TSX. → `15`, `.claude/rules/text-and-types.md`
+- [x] **KW-005** Supabase project + migrations 0001 (enums, households, profiles, members) with RLS + pgTAP. → `07 §1–§4`
+- [x] **KW-006** Auth: email OTP + Apple + Google, `AuthProvider`, secure-store session, `AppLockGate`. → `16 §4`, `11 §1.2`
+- [x] **KW-007** **Local dev auth bypass** + fixture seeding (`EXPO_PUBLIC_SKIP_AUTH`). → `24-local-dev.md`
+- [x] **KW-008** SQLite + Drizzle mirror, `DatabaseProvider`, migrations on start, FTS5 index. → `13 §5`
+- [x] **KW-009** react-query setup with MMKV persistence, key factories, repository pattern. → `13 §3–§4`
+- [x] **KW-010** Outbox + `SyncProvider`: optimistic writes, flush, retry, conflict resolution. → `13 §6`, `06 §10`
 - [ ] **KW-011** CI: typecheck, lint, unit, pgTAP, secrets scan, bundle size. → `20 §3`
-- [ ] **KW-012** Error model: `AppError`, error boundaries, `useErrorToast`, Sentry with scrubber + its unit test. → `13 §8`, `16 §3`
+- [x] **KW-012** Error model: `AppError`, error boundaries, `useErrorToast`, Sentry with scrubber + its unit test. → `13 §8`, `16 §3`
 
 ## M1 — Manual money
 
-- [ ] **KW-013** Migration: categories + seed all system categories per `06 §6`. Bucket derived from the category group, never set directly (I-9). Category icons map. → `12 §7`
+- [x] **KW-013** Migration: categories + seed all system categories per `06 §6`. Bucket derived from the category group, never set directly (I-9). Category icons map. → `12 §7`
 - [ ] **KW-014** Migration: transactions, splits, indexes, constraints, triggers (I-1, I-4, I-6), RLS + pgTAP. → `07 §3–§5`
 - [ ] **KW-015** Transaction repository + `useTransactions` with keyset pagination and local-first reads. → `13 §4`, `14 §3`
 - [ ] **KW-016** Transactions screen: FlashList, day grouping, sticky headers, pending styling, empty/loading/error states. → `11 §3`
@@ -31,9 +35,9 @@ Branch: `feat/KW-0xx-slug`. Commit: Conventional Commits.
 - [ ] **KW-018** Snel toevoegen modal: `AmountInput`, direction, category picker, ≤3 taps. → `11 §11`
 - [ ] **KW-019** Transaction detail: edit, scope, tags, note, exclude, delete, locked bank fields. → `11 §3.4`
 - [ ] **KW-020** Splits UI + `transaction_splits` math (I-7). → `11 §3.4`, `10 §2`
-- [ ] **KW-021** Period engine (`periodFor`, all three kinds) + `budget_periods` migration with the exclusion constraint (I-10). → `10 §1`, `07 §3`
+- [x] **KW-021** Period engine (`periodFor`, all three kinds) + `budget_periods` migration with the exclusion constraint (I-10). → `10 §1`, `07 §3`
 - [ ] **KW-022** Budget lines migration + `v_period_actuals` view + `rpc_current_period`. → `07 §3, §6`
-- [ ] **KW-023** Budget engine pure functions: planned/actual/available/over per line and per bucket. 100% branch coverage. → `10 §2–§3`
+- [x] **KW-023** Budget engine pure functions: planned/actual/available/over per line and per bucket. 100% branch coverage. → `10 §2–§3`
 - [ ] **KW-024** Budget bewerken screen with sticky totals and the history-fill action. → `11 §6`
 - [ ] **KW-025** Overzicht: bucket donut, in/uit, top categories, period switcher. → `11 §5`, `12 §6`
 - [ ] **KW-026** Categorie detail with 12-month sparkline. → `11 §5.3`
@@ -41,10 +45,10 @@ Branch: `feat/KW-0xx-slug`. Commit: Conventional Commits.
 ## M2 — Potjes & the number
 
 - [ ] **KW-027** Envelopes + contributions migration, `saved_cents` trigger (I-11), RLS + pgTAP. → `07 §3, §5`
-- [ ] **KW-028** Envelope math: `monthlyContribution`, `expectedByNow`, behind/ahead, `recycle`. → `10 §4`
+- [x] **KW-028** Envelope math: `monthlyContribution`, `expectedByNow`, behind/ahead, `recycle`. → `10 §4`
 - [ ] **KW-029** Potjes list + detail + create modal with the live "dat is € x per maand" preview. → `11 §4`
-- [ ] **KW-030** Rollover: modes, `carryInto`, `rpc_roll_period` (idempotent) + tests. → `10 §3.4`
-- [ ] **KW-031** `safeToSpend` pure function + `rpc_safe_to_spend` + the full test matrix. → `10 §5`
+- [x] **KW-030** Rollover: modes, `carryInto`, `rpc_roll_period` (idempotent) + tests. → `10 §3.4`
+- [x] **KW-031** `safeToSpend` pure function + `rpc_safe_to_spend` + the full test matrix. → `10 §5`
 - [ ] **KW-032** Vandaag screen: hero card, explainer sheet, komt eraan, te controleren, achterstand, recent. → `11 §2`
 - [ ] **KW-033** Forecast v1 (14 days) + low-balance day detection + chart. → `10 §6`
 
