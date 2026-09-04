@@ -20,6 +20,34 @@ export interface ProgressBarProps {
 
 const LIMITS = { height: 8, overflowCapRatio: 1.4, hatchTile: 6, hatchStrokeWidth: 2 } as const;
 
+interface OverflowHatchProps {
+  readonly patternId: string;
+  readonly left: number;
+  readonly width: number;
+}
+
+/** The over-budget portion, drawn as a 45° hatch so the state is never colour-only (`docs/12` §2). */
+function OverflowHatch({ patternId, left, width }: OverflowHatchProps) {
+  const { theme } = useTheme();
+  return (
+    <Svg width={width} height={LIMITS.height} style={{ position: 'absolute', left, top: 0 }}>
+      <Defs>
+        <Pattern
+          id={patternId}
+          patternUnits="userSpaceOnUse"
+          width={LIMITS.hatchTile}
+          height={LIMITS.hatchTile}
+          patternTransform="rotate(45)"
+        >
+          <Rect width={LIMITS.hatchTile} height={LIMITS.hatchTile} fill={theme.colors.statusWarn} />
+          <Rect width={LIMITS.hatchStrokeWidth} height={LIMITS.hatchTile} fill={theme.colors.bgCanvas} />
+        </Pattern>
+      </Defs>
+      <Rect width="100%" height="100%" fill={`url(#${patternId})`} />
+    </Svg>
+  );
+}
+
 export function ProgressBar({ value, max, testID, accessibilityLabel }: ProgressBarProps) {
   const { theme } = useTheme();
   const [width, setWidth] = useState(0);
@@ -53,25 +81,11 @@ export function ProgressBar({ value, max, testID, accessibilityLabel }: Progress
         }}
       />
       {isOver && width > 0 ? (
-        <Svg
+        <OverflowHatch
+          patternId={patternId}
+          left={fillRatio * width}
           width={overflowRatio * width}
-          height={LIMITS.height}
-          style={{ position: 'absolute', left: fillRatio * width, top: 0 }}
-        >
-          <Defs>
-            <Pattern
-              id={patternId}
-              patternUnits="userSpaceOnUse"
-              width={LIMITS.hatchTile}
-              height={LIMITS.hatchTile}
-              patternTransform="rotate(45)"
-            >
-              <Rect width={LIMITS.hatchTile} height={LIMITS.hatchTile} fill={theme.colors.statusWarn} />
-              <Rect width={LIMITS.hatchStrokeWidth} height={LIMITS.hatchTile} fill={theme.colors.bgCanvas} />
-            </Pattern>
-          </Defs>
-          <Rect width="100%" height="100%" fill={`url(#${patternId})`} />
-        </Svg>
+        />
       ) : null}
     </View>
   );

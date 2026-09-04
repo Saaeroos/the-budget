@@ -1,8 +1,7 @@
 // Persistent inline status: offline, stale bank data, expiring consent (`docs/11` §State matrix,
 // `docs/08` §8). Meaning is never carried by colour alone — every tone also ships an icon.
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { AlertTriangle, Info, OctagonAlert, X } from 'lucide-react-native';
-import { Pressable } from 'react-native';
 import { Text } from './Text';
 import { useTheme } from './ThemeProvider';
 import type { Theme } from './tokens';

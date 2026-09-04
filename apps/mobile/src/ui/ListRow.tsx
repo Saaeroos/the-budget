@@ -37,56 +37,62 @@ export interface ListRowProps {
 
 /* ── Implementation ───────────────────────────────────── */
 
-const LIMITS = { actionWidth: 72, dragActivationPx: 8 } as const;
+const LIMITS = { actionWidth: 72, dragActivationPx: 8, minHeight: 44, springDamping: 20 } as const;
 
-export function ListRow({
-  leading,
-  title,
-  subtitle,
-  trailing,
-  onPress,
-  leftActions = [],
-  rightActions = [],
-  disabled = false,
-  testID,
-  accessibilityLabel,
-}: ListRowProps) {
-  const { theme } = useTheme();
+interface SwipeGestureInput {
+  readonly leftCount: number;
+  readonly rightCount: number;
+  readonly enabled: boolean;
+}
+
+/** Owns the swipe-to-action pan gesture and the row's transform, so `ListRow` stays composition. */
+function useSwipeGesture({ leftCount, rightCount, enabled }: SwipeGestureInput) {
   const reducedMotion = useReducedMotion();
   const translateX = useSharedValue(0);
-  const leftWidth = leftActions.length * LIMITS.actionWidth;
-  const rightWidth = rightActions.length * LIMITS.actionWidth;
-  const canSwipe = leftActions.length > 0 || rightActions.length > 0;
+  const leftWidth = leftCount * LIMITS.actionWidth;
+  const rightWidth = rightCount * LIMITS.actionWidth;
 
   const snap = (to: number) => {
     'worklet';
-    translateX.value = reducedMotion ? withTiming(to, { duration: 0 }) : withSpring(to, { damping: 20 });
+    translateX.value = reducedMotion ? withTiming(to, { duration: 0 }) : withSpring(to, { damping: LIMITS.springDamping });
   };
 
   const pan = Gesture.Pan()
-    .enabled(canSwipe && !disabled)
+    .enabled(enabled)
     .activeOffsetX([-LIMITS.dragActivationPx, LIMITS.dragActivationPx])
     .onChange((event) => {
       const next = translateX.value + event.changeX;
       translateX.value = Math.max(-rightWidth, Math.min(leftWidth, next));
     })
     .onEnd(() => {
-      const midpoint = translateX.value;
-      if (midpoint > leftWidth / 2) snap(leftWidth);
-      else if (midpoint < -rightWidth / 2) snap(-rightWidth);
+      const at = translateX.value;
+      if (at > leftWidth / 2) snap(leftWidth);
+      else if (at < -rightWidth / 2) snap(-rightWidth);
       else snap(0);
     });
 
   const rowStyle = useAnimatedStyle(() => ({ transform: [{ translateX: translateX.value }] }));
+  return { pan, rowStyle };
+}
 
-  const content = (
+interface RowContentProps {
+  readonly rowStyle: ReturnType<typeof useAnimatedStyle>;
+  readonly leading?: ReactNode | undefined;
+  readonly title: string;
+  readonly subtitle?: string | undefined;
+  readonly trailing?: ReactNode | undefined;
+}
+
+function RowContent({ rowStyle, leading, title, subtitle, trailing }: RowContentProps) {
+  const { theme } = useTheme();
+  return (
     <Animated.View
       style={[
         rowStyle,
         {
           flexDirection: 'row',
           alignItems: 'center',
-          minHeight: 44,
+          minHeight: LIMITS.minHeight,
           paddingHorizontal: theme.spacing['16'],
           paddingVertical: theme.spacing['12'],
           gap: theme.spacing['12'],
@@ -107,6 +113,30 @@ export function ListRow({
       </View>
       {trailing}
     </Animated.View>
+  );
+}
+
+export function ListRow({
+  leading,
+  title,
+  subtitle,
+  trailing,
+  onPress,
+  leftActions = [],
+  rightActions = [],
+  disabled = false,
+  testID,
+  accessibilityLabel,
+}: ListRowProps) {
+  const canSwipe = leftActions.length > 0 || rightActions.length > 0;
+  const { pan, rowStyle } = useSwipeGesture({
+    leftCount: leftActions.length,
+    rightCount: rightActions.length,
+    enabled: canSwipe && !disabled,
+  });
+
+  const content = (
+    <RowContent rowStyle={rowStyle} leading={leading} title={title} subtitle={subtitle} trailing={trailing} />
   );
 
   const row = onPress ? (

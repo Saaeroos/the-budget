@@ -33,11 +33,24 @@ export interface MoneyProps {
 const DEFAULT_SIGN: MoneySign = 'auto';
 const PLUS_PREFIX = '+';
 
+interface MoneyDisplay {
+  readonly text: string;
+  readonly color: TextColorToken;
+}
+
+/** Pure: turns an amount plus its presentation options into the string and colour to render. */
+export function moneyDisplay(
+  amount: Cents,
+  options: { readonly sign: MoneySign; readonly compact: boolean; readonly color?: TextColorToken },
+): MoneyDisplay {
+  const displayCents = options.sign === 'none' ? (Math.abs(amount) as Cents) : amount;
+  const formatted = formatEUR(displayCents, { decimals: options.compact ? 'auto' : 'always' });
+  const text = options.sign === 'always' && amount > 0 ? `${PLUS_PREFIX}${formatted}` : formatted;
+  return { text, color: options.color ?? (amount > 0 ? 'positive' : 'primary') };
+}
+
 export function Money({ cents, variant = 'body', sign = DEFAULT_SIGN, compact = false, color, testID, accessibilityLabel }: MoneyProps) {
-  const displayCents = sign === 'none' ? (Math.abs(cents) as Cents) : cents;
-  const formatted = formatEUR(displayCents, { decimals: compact ? 'auto' : 'always' });
-  const withSign = sign === 'always' && cents > 0 ? `${PLUS_PREFIX}${formatted}` : formatted;
-  const resolvedColor: TextColorToken = color ?? (cents > 0 ? 'positive' : 'primary');
+  const { text: withSign, color: resolvedColor } = moneyDisplay(cents, { sign, compact, ...(color ? { color } : {}) });
 
   return (
     <Text

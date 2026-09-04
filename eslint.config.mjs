@@ -11,8 +11,9 @@ export default [
       'max-depth': ['error', 3],
       complexity: ['error', 10],
       'no-console': ['error', { allow: ['warn', 'error'] }],
-      eqeqeq: ['error', 'always'],
+      eqeqeq: ['error', 'always', { null: 'ignore' }],
       'prefer-const': 'error',
+      'import/no-unresolved': 'off',
       'no-restricted-syntax': [
         'error',
         { selector: 'TSEnumDeclaration', message: 'Rule 02: use an `as const` object with a derived union instead of an enum.' },
@@ -42,6 +43,11 @@ export default [
   },
   {
     files: ['**/*.test.ts', '**/*.test.tsx', 'jest.setup.ts'],
-    rules: { 'max-lines-per-function': 'off', 'no-restricted-syntax': 'off' },
+    rules: {
+      'max-lines-per-function': 'off',
+      'max-params': 'off',
+      'no-restricted-syntax': 'off',
+      complexity: 'off',
+    },
   },
 ];

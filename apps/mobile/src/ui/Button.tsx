@@ -2,7 +2,7 @@
 // state, full-width option. Buttons are the one place copy is a plain prop, not a `TEXT`
 // lookup — `ui/` never calls `useTranslation()`; the caller resolves the label and passes it
 // in already translated (`.claude/rules/06-ui-and-styling.md`).
-import { ActivityIndicator, Pressable, View, type GestureResponderEvent } from 'react-native';
+import { ActivityIndicator, Pressable, View, type GestureResponderEvent, type ViewStyle } from 'react-native';
 import { Text } from './Text';
 import { useTheme } from './ThemeProvider';
 import type { Theme } from './tokens';
@@ -53,6 +53,33 @@ function variantColors(theme: Theme, variant: ButtonVariant, disabled: boolean):
   }
 }
 
+const PRESSED_OPACITY = 0.85;
+
+interface SurfaceStyleInput {
+  readonly theme: Theme;
+  readonly colors: VariantColors;
+  readonly height: number;
+  readonly fullWidth: boolean;
+  readonly pressed: boolean;
+}
+
+function surfaceStyle({ theme, colors, height, fullWidth, pressed }: SurfaceStyleInput): ViewStyle {
+  return {
+    minHeight: height,
+    minWidth: height,
+    paddingHorizontal: theme.spacing['20'],
+    borderRadius: theme.radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: colors.background,
+    borderWidth: colors.borderColor ? 1 : 0,
+    borderColor: colors.borderColor,
+    opacity: pressed ? PRESSED_OPACITY : 1,
+    alignSelf: fullWidth ? 'stretch' : 'flex-start',
+  };
+}
+
 export function Button({
   label,
   onPress,
@@ -77,22 +104,7 @@ export function Button({
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={{ disabled: isDisabled, busy: loading }}
       testID={testID}
-      style={({ pressed }) => [
-        {
-          minHeight: height,
-          minWidth: height,
-          paddingHorizontal: theme.spacing['20'],
-          borderRadius: theme.radius.md,
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          backgroundColor: colors.background,
-          borderWidth: colors.borderColor ? 1 : 0,
-          borderColor: colors.borderColor,
-          opacity: pressed ? 0.85 : 1,
-          alignSelf: fullWidth ? 'stretch' : 'flex-start',
-        },
-      ]}
+      style={({ pressed }) => surfaceStyle({ theme, colors, height, fullWidth, pressed })}
     >
       {loading ? (
         <View style={{ marginEnd: theme.spacing['8'] }}>

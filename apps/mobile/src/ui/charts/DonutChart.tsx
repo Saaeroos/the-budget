@@ -49,6 +49,42 @@ function orderedArcs(segments: readonly DonutSegment[]): readonly Arc[] {
   });
 }
 
+interface DonutArcsProps {
+  readonly arcs: readonly Arc[];
+  readonly total: number;
+  readonly size: number;
+  readonly radius: number;
+  readonly strokeWidth: number;
+}
+
+function DonutArcs({ arcs, total, size, radius, strokeWidth }: DonutArcsProps) {
+  const { theme } = useTheme();
+  if (total <= 0) return null;
+  const circumference = 2 * Math.PI * radius;
+  return (
+    <>
+      {arcs
+        .filter((arc) => arc.value > 0)
+        .map((arc) => {
+          const arcLength = (arc.value / total) * circumference;
+          return (
+            <Circle
+              key={arc.bucket}
+              cx={size / 2}
+              cy={size / 2}
+              r={radius}
+              stroke={theme.bucketColor[arc.bucket]}
+              strokeWidth={strokeWidth}
+              strokeDasharray={`${arcLength} ${circumference - arcLength}`}
+              strokeDashoffset={-((arc.offset / total) * circumference)}
+              fill="none"
+            />
+          );
+        })}
+    </>
+  );
+}
+
 export function DonutChart({
   segments,
   size = LIMITS.defaultSize,
@@ -61,7 +97,6 @@ export function DonutChart({
   const { theme } = useTheme();
   const [showTable, setShowTable] = useState(false);
   const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
   const total = segments.reduce((sum, segment) => sum + segment.value, 0);
   const arcs = orderedArcs(segments);
 
@@ -72,26 +107,7 @@ export function DonutChart({
           <Svg width={size} height={size} style={{ position: 'absolute', transform: [{ rotate: '-90deg' }] }}>
             <G>
               <Circle cx={size / 2} cy={size / 2} r={radius} stroke={theme.colors.bgSubtle} strokeWidth={strokeWidth} fill="none" />
-              {total > 0
-                ? arcs
-                    .filter((arc) => arc.value > 0)
-                    .map((arc) => {
-                      const arcLength = (arc.value / total) * circumference;
-                      return (
-                        <Circle
-                          key={arc.bucket}
-                          cx={size / 2}
-                          cy={size / 2}
-                          r={radius}
-                          stroke={theme.bucketColor[arc.bucket]}
-                          strokeWidth={strokeWidth}
-                          strokeDasharray={`${arcLength} ${circumference - arcLength}`}
-                          strokeDashoffset={-((arc.offset / total) * circumference)}
-                          fill="none"
-                        />
-                      );
-                    })
-                : null}
+              <DonutArcs arcs={arcs} total={total} size={size} radius={radius} strokeWidth={strokeWidth} />
             </G>
           </Svg>
           {children}

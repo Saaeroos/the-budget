@@ -52,7 +52,15 @@ function isWithinWindow(day: NLDate, window: ForecastWindow): boolean {
  * `cadence`. An `irregular` cadence has no defined interval, so it contributes at most
  * its one known date rather than looping forever.
  */
-function expandRecurring(startOn: NLDate, cadence: Cadence, amountCents: Cents, sign: 1 | -1, window: ForecastWindow): ForecastEvent[] {
+interface RecurringExpansion {
+  readonly startOn: NLDate;
+  readonly cadence: Cadence;
+  readonly amountCents: Cents;
+  readonly sign: 1 | -1;
+  readonly window: ForecastWindow;
+}
+
+function expandRecurring({ startOn, cadence, amountCents, sign, window }: RecurringExpansion): ForecastEvent[] {
   const events: ForecastEvent[] = [];
   let occurrence = startOn;
   while (occurrence <= window.endsOn) {
@@ -66,7 +74,9 @@ function expandRecurring(startOn: NLDate, cadence: Cadence, amountCents: Cents, 
 }
 
 export function expandSeries(series: readonly RecurringSeriesInput[], window: ForecastWindow): ForecastEvent[] {
-  return series.flatMap((s) => expandRecurring(s.nextExpectedOn, s.cadence, s.amountCents, -1, window));
+  return series.flatMap((s) =>
+    expandRecurring({ startOn: s.nextExpectedOn, cadence: s.cadence, amountCents: s.amountCents, sign: -1, window }),
+  );
 }
 
 export function expandObligations(obligations: readonly ObligationDueInput[], window: ForecastWindow): ForecastEvent[] {
@@ -76,7 +86,9 @@ export function expandObligations(obligations: readonly ObligationDueInput[], wi
 }
 
 export function expandIncome(incomeEvents: readonly IncomeForecastInput[], window: ForecastWindow): ForecastEvent[] {
-  return incomeEvents.flatMap((i) => expandRecurring(i.firstExpectedOn, i.cadence, i.amountCents, 1, window));
+  return incomeEvents.flatMap((i) =>
+    expandRecurring({ startOn: i.firstExpectedOn, cadence: i.cadence, amountCents: i.amountCents, sign: 1, window }),
+  );
 }
 
 export function pendingForecastEvents(transactions: readonly PendingForecastTransaction[], window: ForecastWindow): ForecastEvent[] {
