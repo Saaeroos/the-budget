@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="ts-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DFF4EE"/>
+      <stop offset="100%" stop-color="#FBEFD6"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#ts-bg)"/>
+  <rect x="2" y="2" width="116" height="116" rx="26" stroke="#12A184" stroke-width="2" stroke-opacity="0.25"/>
+  <!-- Official Blue Envelope -->
+  <rect x="24" y="42" width="72" height="50" rx="6" fill="#FFFFFF" stroke="#1B4FA0" stroke-width="2.5"/>
+  <path d="M25 44l35 26 35-26" stroke="#1B4FA0" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Crown seal / Belastingdienst emblem -->
+  <circle cx="60" cy="42" r="14" fill="#E9AE3C" stroke="#9A6300" stroke-width="2"/>
+  <polygon points="52,46 54,38 57,42 60,36 63,42 66,38 68,46" fill="#9A6300"/>
+  <!-- Incoming arrow with coin -->
+  <circle cx="84" cy="30" r="11" fill="#12A184" stroke="#FFFFFF" stroke-width="2"/>
+  <path d="M84 25v10m-4-4l4 4 4-4" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

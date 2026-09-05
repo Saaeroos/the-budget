@@ -3,6 +3,7 @@
 // descriptors the feature layer supplies; `ListRow` only knows how to lay them out and reveal
 // them (`.claude/rules/01-architecture.md` — no business meaning in `ui/`).
 import type { ReactNode } from 'react';
+import type { ViewStyle } from 'react-native';
 import { Pressable, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
@@ -71,12 +72,12 @@ function useSwipeGesture({ leftCount, rightCount, enabled }: SwipeGestureInput) 
       else snap(0);
     });
 
-  const rowStyle = useAnimatedStyle(() => ({ transform: [{ translateX: translateX.value }] }));
+  const rowStyle = useAnimatedStyle<ViewStyle>(() => ({ transform: [{ translateX: translateX.value }] }));
   return { pan, rowStyle };
 }
 
 interface RowContentProps {
-  readonly rowStyle: ReturnType<typeof useAnimatedStyle>;
+  readonly rowStyle: ReturnType<typeof useAnimatedStyle<ViewStyle>>;
   readonly leading?: ReactNode | undefined;
   readonly title: string;
   readonly subtitle?: string | undefined;

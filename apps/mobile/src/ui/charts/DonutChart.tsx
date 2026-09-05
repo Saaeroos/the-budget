@@ -61,26 +61,31 @@ function DonutArcs({ arcs, total, size, radius, strokeWidth }: DonutArcsProps) {
   const { theme } = useTheme();
   if (total <= 0) return null;
   const circumference = 2 * Math.PI * radius;
+  const activeArcs = arcs.filter((arc) => arc.value > 0);
+  const hasMultiple = activeArcs.length > 1;
+  const gap = hasMultiple ? Math.min(6, circumference / (activeArcs.length * 4)) : 0;
+
   return (
     <>
-      {arcs
-        .filter((arc) => arc.value > 0)
-        .map((arc) => {
-          const arcLength = (arc.value / total) * circumference;
-          return (
-            <Circle
-              key={arc.bucket}
-              cx={size / 2}
-              cy={size / 2}
-              r={radius}
-              stroke={theme.bucketColor[arc.bucket]}
-              strokeWidth={strokeWidth}
-              strokeDasharray={`${arcLength} ${circumference - arcLength}`}
-              strokeDashoffset={-((arc.offset / total) * circumference)}
-              fill="none"
-            />
-          );
-        })}
+      {activeArcs.map((arc) => {
+        const rawLength = (arc.value / total) * circumference;
+        const arcLength = Math.max(0.1, rawLength - gap);
+        const offset = (arc.offset / total) * circumference + gap / 2;
+        return (
+          <Circle
+            key={arc.bucket}
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={theme.bucketColor[arc.bucket]}
+            strokeWidth={strokeWidth}
+            strokeDasharray={`${arcLength} ${circumference - arcLength}`}
+            strokeDashoffset={-offset}
+            strokeLinecap="round"
+            fill="none"
+          />
+        );
+      })}
     </>
   );
 }

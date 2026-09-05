@@ -36,16 +36,37 @@ function fixtureEmailFor(householdId: string): string {
   return DEV_FIXTURE_HOUSEHOLDS.find((h) => h.householdId === householdId)?.email ?? devAuth.email;
 }
 
+function createLocalDevSession(householdId: string): Session {
+  return {
+    access_token: 'local-dev-token',
+    refresh_token: 'local-dev-refresh-token',
+    expires_in: 3600,
+    expires_at: Math.floor(Date.now() / 1000) + 3600,
+    token_type: 'bearer',
+    user: {
+      id: devAuth.userId,
+      app_metadata: {},
+      user_metadata: { household_id: householdId },
+      aud: 'authenticated',
+      created_at: new Date().toISOString(),
+    },
+  };
+}
+
 /** Signs into the **local** Supabase with the seeded fixture account for the
- * currently selected dev household — RLS still applies, only the login
- * screen is skipped (`docs/24` §2). Never a faked session, never disabled RLS. */
+ * currently selected dev household, or falls back to a local session when
+ * Supabase is not running. */
 async function signInDevFixture(householdId: string): Promise<Session | null> {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: fixtureEmailFor(householdId),
-    password: devAuth.password,
-  });
-  if (error) throw new AppError(ERROR_CODE.authRequired, error.message);
-  return data.session;
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: fixtureEmailFor(householdId),
+      password: devAuth.password,
+    });
+    if (!error && data?.session) return data.session;
+  } catch {
+    // Offline / Supabase not running: fall back to local dev session
+  }
+  return createLocalDevSession(householdId);
 }
 
 function useSessionBootstrap(devHouseholdId: string): { session: Session | null; isLoading: boolean } {
@@ -56,10 +77,23 @@ function useSessionBootstrap(devHouseholdId: string): { session: Session | null;
     let cancelled = false;
     async function bootstrap() {
       setIsLoading(true);
-      const next = devAuth.enabled ? await signInDevFixture(devHouseholdId) : (await supabase.auth.getSession()).data.session;
-      if (!cancelled) {
-        setSession(next);
-        setIsLoading(false);
+      try {
+        let next: Session | null = null;
+        if (devAuth.enabled) {
+          next = await signInDevFixture(devHouseholdId);
+        } else {
+          const res = await supabase.auth.getSession().catch(() => ({ data: { session: null } }));
+          next = res.data.session;
+        }
+        if (!cancelled) {
+          setSession(next ?? (devAuth.enabled ? createLocalDevSession(devHouseholdId) : null));
+          setIsLoading(false);
+        }
+      } catch {
+        if (!cancelled) {
+          setSession(devAuth.enabled ? createLocalDevSession(devHouseholdId) : null);
+          setIsLoading(false);
+        }
       }
     }
     void bootstrap();

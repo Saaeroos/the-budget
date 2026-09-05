@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="ja-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBEFD6"/>
+      <stop offset="100%" stop-color="#FBE4E1"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#ja-bg)"/>
+  <rect x="2" y="2" width="116" height="116" rx="26" stroke="#E9AE3C" stroke-width="2" stroke-opacity="0.3"/>
+  <!-- Calendar Document -->
+  <rect x="30" y="32" width="60" height="66" rx="8" fill="#FFFFFF" stroke="#4A5365" stroke-width="2.5"/>
+  <!-- Calendar Header -->
+  <path d="M30 40c0-4.4 3.6-8 8-8h44c4.4 0 8 3.6 8 8v8H30v-8z" fill="#C13B31" stroke="#C13B31" stroke-width="2.5"/>
+  <!-- Binder rings -->
+  <rect x="44" y="26" width="4" height="10" rx="2" fill="#333A48"/>
+  <rect x="72" y="26" width="4" height="10" rx="2" fill="#333A48"/>
+  <!-- Lightning bolt for electricity/energy -->
+  <polygon points="60,54 52,68 59,68 57,84 69,66 61,66" fill="#E9AE3C" stroke="#9A6300" stroke-width="1.75" stroke-linejoin="round"/>
+  <!-- Flame for gas / warmte -->
+  <path d="M74 76c0 4-3 7-7 7s-7-3-7-7c0-5 5-10 7-14 2 4 7 9 7 14z" fill="#E0665C" stroke="#96271F" stroke-width="1.5" opacity="0.85"/>
+</svg>

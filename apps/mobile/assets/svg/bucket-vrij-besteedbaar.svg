@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="vb-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E4E8EF"/>
+      <stop offset="100%" stop-color="#C6CCD8"/>
+    </linearGradient>
+    <linearGradient id="vb-wallet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A5365"/>
+      <stop offset="100%" stop-color="#232833"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#vb-bg)"/>
+  <rect x="2" y="2" width="116" height="116" rx="26" stroke="#6B7488" stroke-width="2" stroke-opacity="0.2"/>
+  <!-- Banknote peeking out -->
+  <rect x="38" y="32" width="44" height="24" rx="4" transform="rotate(-6 38 32)" fill="#DFF4EE" stroke="#12A184" stroke-width="2"/>
+  <circle cx="59" cy="43" r="5" fill="#12A184" fill-opacity="0.3"/>
+  <!-- Wallet Body -->
+  <rect x="28" y="46" width="64" height="44" rx="10" fill="url(#vb-wallet)" stroke="#0E1116" stroke-width="2.5"/>
+  <!-- Wallet Flap & Stitching -->
+  <path d="M29 56h62" stroke="#6B7488" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <!-- Clasp -->
+  <path d="M74 58h18c3 0 5 2 5 5v10c0 3-2 5-5 5H74z" fill="#333A48" stroke="#0E1116" stroke-width="2"/>
+  <circle cx="84" cy="68" r="4" fill="#E9AE3C" stroke="#9A6300" stroke-width="1.5"/>
+  <!-- Sparkles of Freedom -->
+  <path d="M26 36l2 4 4 2-4 2-2 4-2-4-4-2 4-2z" fill="#2E6FD1"/>
+  <path d="M94 38l2.5 5 5 2.5-5 2.5-2.5 5-2.5-5-5-2.5 5-2.5z" fill="#12A184"/>
+</svg>

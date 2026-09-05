@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="nf-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E3EDFB"/>
+      <stop offset="100%" stop-color="#DFF4EE"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#nf-bg)"/>
+  <rect x="2" y="2" width="116" height="116" rx="26" stroke="#12A184" stroke-width="2" stroke-opacity="0.2"/>
+  <!-- Nautical Lifebuoy outer circle -->
+  <circle cx="60" cy="60" r="38" fill="#E0665C" stroke="#96271F" stroke-width="3"/>
+  <!-- Lifebuoy white quadrant sections -->
+  <path d="M60 22a38 38 0 0 1 27 11l-14 14a18 18 0 0 0-13-5z" fill="#FFFFFF" stroke="#96271F" stroke-width="1.5"/>
+  <path d="M98 60a38 38 0 0 1-11 27l-14-14a18 18 0 0 0 5-13z" fill="#FFFFFF" stroke="#96271F" stroke-width="1.5"/>
+  <path d="M60 98a38 38 0 0 1-27-11l14-14a18 18 0 0 0 13 5z" fill="#FFFFFF" stroke="#96271F" stroke-width="1.5"/>
+  <path d="M22 60a38 38 0 0 1 11-27l14 14a18 18 0 0 0-5 13z" fill="#FFFFFF" stroke="#96271F" stroke-width="1.5"/>
+  <!-- Center Coin Buffer -->
+  <circle cx="60" cy="60" r="18" fill="#12A184" stroke="#FFFFFF" stroke-width="3"/>
+  <path d="M62 55a4 4 0 0 0-5 3v1h5m-6 2h6m-6-2a4 4 0 0 0 5 3" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+</svg>

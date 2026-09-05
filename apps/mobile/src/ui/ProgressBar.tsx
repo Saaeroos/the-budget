@@ -14,6 +14,7 @@ export interface ProgressBarProps {
   readonly max: number;
   readonly testID: string;
   readonly accessibilityLabel: string;
+  readonly tone?: 'auto' | 'accent' | 'warn';
 }
 
 /* ── Implementation ───────────────────────────────────── */
@@ -48,13 +49,14 @@ function OverflowHatch({ patternId, left, width }: OverflowHatchProps) {
   );
 }
 
-export function ProgressBar({ value, max, testID, accessibilityLabel }: ProgressBarProps) {
+export function ProgressBar({ value, max, testID, accessibilityLabel, tone = 'auto' }: ProgressBarProps) {
   const { theme } = useTheme();
   const [width, setWidth] = useState(0);
   const ratio = max > 0 ? value / max : 0;
   const fillRatio = clamp(ratio, 0, 1);
   const isOver = ratio > 1;
-  const overflowRatio = isOver ? clamp(ratio, 1, LIMITS.overflowCapRatio) - 1 : 0;
+  const isWarnState = tone === 'warn' || (tone === 'auto' && isOver);
+  const overflowRatio = isWarnState ? clamp(ratio, 1, LIMITS.overflowCapRatio) - 1 : 0;
   const patternId = `progress-hatch-${testID}`;
 
   const handleLayout = (event: LayoutChangeEvent) => setWidth(event.nativeEvent.layout.width);
@@ -67,7 +69,12 @@ export function ProgressBar({ value, max, testID, accessibilityLabel }: Progress
       accessibilityLabel={accessibilityLabel}
       accessibilityValue={{ min: 0, max: 100, now: Math.round(fillRatio * 100) }}
       onLayout={handleLayout}
-      style={{ height: LIMITS.height, borderRadius: theme.radius.full, backgroundColor: theme.colors.bgSubtle }}
+      style={{
+        height: LIMITS.height,
+        borderRadius: theme.radius.full,
+        backgroundColor: theme.colors.bgSubtle,
+        overflow: 'hidden',
+      }}
     >
       <View
         style={{
@@ -77,10 +84,10 @@ export function ProgressBar({ value, max, testID, accessibilityLabel }: Progress
           bottom: 0,
           width: `${fillRatio * 100}%`,
           borderRadius: theme.radius.full,
-          backgroundColor: isOver ? theme.colors.statusWarn : theme.colors.accentBg,
+          backgroundColor: isWarnState ? theme.colors.statusWarn : theme.colors.accentBg,
         }}
       />
-      {isOver && width > 0 ? (
+      {isWarnState && overflowRatio > 0 && width > 0 ? (
         <OverflowHatch
           patternId={patternId}
           left={fillRatio * width}

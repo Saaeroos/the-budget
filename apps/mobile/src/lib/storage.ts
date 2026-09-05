@@ -1,4 +1,5 @@
-import { createMMKV } from 'react-native-mmkv';
+import Constants, { ExecutionEnvironment } from 'expo-constants';
+import { TurboModuleRegistry } from 'react-native';
 
 /* ── Text ─────────────────────────────────────────────── */
 // (none — this file has no user-facing or logged strings)
@@ -41,12 +42,44 @@ const ID = {
 
 /* ── Implementation ──────────────────────────────────────── */
 
+function createStore(id: string): KeyValueStore {
+  // Expo Go (StoreClient) does not include custom native modules like react-native-mmkv.
+  // Fall back to an in-memory key-value store to allow running under Expo Go seamlessly.
+  const isExpoGo =
+    Constants.executionEnvironment === ExecutionEnvironment.StoreClient ||
+    Constants.appOwnership === 'expo';
+
+  if (!isExpoGo) {
+    try {
+      const hasNitro = TurboModuleRegistry.get('NitroModules') != null;
+      if (hasNitro || process.env.NODE_ENV === 'test') {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const { createMMKV } = require('react-native-mmkv') as {
+          createMMKV: (options: { id: string }) => KeyValueStore;
+        };
+        return createMMKV({ id });
+      }
+    } catch {
+      // Native MMKV module unavailable in this runtime environment
+    }
+  }
+
+  const memory = new Map<string, string>();
+  return {
+    getString: (key: string) => memory.get(key),
+    set: (key: string, value: string) => {
+      memory.set(key, value);
+    },
+    remove: (key: string) => memory.delete(key),
+  };
+}
+
 /** User preferences and zustand-persisted UI state (theme, filters). */
-export const prefsStorage: KeyValueStore = createMMKV({ id: ID.prefs });
+export const prefsStorage: KeyValueStore = createStore(ID.prefs);
 
 /** Dedicated instance for the react-query persister, kept separate so a
  * cache wipe (`dev:reset`) never touches user preferences. */
-export const queryCacheStorage: KeyValueStore = createMMKV({ id: ID.query });
+export const queryCacheStorage: KeyValueStore = createStore(ID.query);
 
 export function toPersistStorage(store: KeyValueStore): PersistStateStorage {
   return {

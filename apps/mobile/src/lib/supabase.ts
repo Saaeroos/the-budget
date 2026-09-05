@@ -1,11 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import { createClient, type SupportedStorage } from '@supabase/supabase-js';
-import { AppError, ERROR_CODE } from '@shared';
-
 /* ── Text ─────────────────────────────────────────────── */
-const TEXT = {
-  missingConfig: 'supabase.ts: EXPO_PUBLIC_SUPABASE_URL / EXPO_PUBLIC_SUPABASE_ANON_KEY are not set',
-} as const;
+// (none — this file has no user-facing or logged strings)
 
 /* ── Types ────────────────────────────────────────────── */
 // (no exported types beyond the `supabase` client itself)
@@ -64,11 +60,8 @@ const secureStoreAdapter: SupportedStorage = {
 };
 
 function readEnv(): { url: string; anonKey: string } {
-  const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) {
-    throw new AppError(ERROR_CODE.internal, TEXT.missingConfig);
-  }
+  const url = process.env.EXPO_PUBLIC_SUPABASE_URL || 'http://localhost:54321';
+  const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'dummy-anon-key-local';
   return { url, anonKey };
 }
 

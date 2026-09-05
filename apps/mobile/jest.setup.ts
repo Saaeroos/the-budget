@@ -48,3 +48,30 @@ jest.mock('react-native-mmkv', () => {
 jest.mock('expo-localization', () => ({
   getLocales: () => [{ languageTag: 'nl-NL', languageCode: 'nl', regionCode: 'NL' }],
 }));
+
+jest.mock('expo-router', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    back: jest.fn(),
+    canGoBack: () => true,
+    setParams: jest.fn(),
+  }),
+  useLocalSearchParams: () => ({}),
+  usePathname: () => '/',
+  useSegments: () => [],
+}));
+
+/* eslint-disable @typescript-eslint/no-require-imports */
+// Reanimated & Gesture Handler mocks for component tests importing from @/ui
+jest.mock('react-native-worklets', () => require('react-native-worklets/src/mock'));
+jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+jest.mock('react-native-safe-area-context', () => {
+  const mock = require('react-native-safe-area-context/jest/mock');
+  return mock.default ?? mock;
+});
+try {
+  require('react-native-gesture-handler/jestSetup');
+} catch {
+  // no-op if gesture handler jestSetup is already loaded or paths differ
+}

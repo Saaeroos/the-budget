@@ -11,7 +11,8 @@
     "./dates": "./src/dates/index.ts",
     "./budget": "./src/budget/index.ts",
     "./contracts": "./src/contracts/index.ts",
-    "./enrich": "./src/enrich/index.ts"
+    "./enrich": "./src/enrich/index.ts",
+    "./tax": "./src/tax/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

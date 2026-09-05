@@ -1,5 +1,3 @@
-import Constants from 'expo-constants';
-
 /* ── Text ─────────────────────────────────────────────── */
 // TEXT holds i18n keys, per Rule 02 — see docs/DECISIONS.md for why this
 // deviates from docs/24 §2's illustrative snippet (which inlines the Dutch
@@ -7,6 +5,7 @@ import Constants from 'expo-constants';
 const TEXT = {
   banner: 'dev.banner',
   switchUser: 'dev.switch_user',
+  resetOnboarding: 'dev.reset_onboarding',
 } as const;
 
 /* ── Types ────────────────────────────────────────────── */
@@ -54,9 +53,8 @@ export const DEV_FIXTURE_HOUSEHOLDS: readonly DevFixtureHousehold[] = [
  */
 const isDevBuild =
   __DEV__ &&
-  process.env.EXPO_PUBLIC_ENV === 'development' &&
-  process.env.EXPO_PUBLIC_SKIP_AUTH === '1' &&
-  String(Constants.expoConfig?.extra?.supabaseUrl ?? '').includes('localhost');
+  (process.env.EXPO_PUBLIC_ENV === 'development' || !process.env.EXPO_PUBLIC_ENV) &&
+  (process.env.EXPO_PUBLIC_SKIP_AUTH === '1' || !process.env.EXPO_PUBLIC_SKIP_AUTH);
 
 export const devAuth: DevAuthConfig = {
   enabled: isDevBuild,

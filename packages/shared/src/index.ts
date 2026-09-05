@@ -10,3 +10,4 @@ export * from './dates';
 export * from './budget';
 export * from './contracts';
 export * from './enrich';
+export * from './tax';

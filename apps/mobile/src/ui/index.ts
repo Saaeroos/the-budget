@@ -19,6 +19,8 @@ export { SegmentedControl, type SegmentedControlProps, type SegmentedControlOpti
 export { EmptyState, type EmptyStateProps, type EmptyStateAction } from './EmptyState';
 export { Banner, type BannerProps, type BannerTone, type BannerAction } from './Banner';
 export { Skeleton, SkeletonGroup, type SkeletonProps, type SkeletonGroupProps } from './Skeleton';
+export { FadeInView, type FadeInViewProps } from './FadeInView';
+export { BottomBackButton, type BottomBackButtonProps } from './BottomBackButton';
 
 export { DonutChart, type DonutChartProps, type DonutSegment, type DonutBucket } from './charts/DonutChart';
 export { BarChart, type BarChartProps, type BarChartSeries } from './charts/BarChart';
@@ -27,3 +29,29 @@ export { Sparkline, type SparklineProps } from './charts/Sparkline';
 export type { AxisValueFormat } from './charts/formatAxisValue';
 
 export { CATEGORY_ICON, type CategoryIconKey } from './icons/categories';
+
+export {
+  KwartjeMarkSvg,
+  BucketVasteLastenSvg,
+  BucketReserveringenSvg,
+  BucketHuishoudelijkSvg,
+  BucketVrijBesteedbaarSvg,
+  SafeToSpendSvg,
+  BankConnectSvg,
+  IncomeSalarisSvg,
+  JaarafrekeningSvg,
+  NoodfondsBufferSvg,
+  ToeslagenSvg,
+  EmptyTransactionsSvg,
+  EmptyPotjesSvg,
+  SavingsGoalReachedSvg,
+  WarningOverbudgetSvg,
+  NavTodaySvg,
+  NavTransactionsSvg,
+  NavAddSvg,
+  NavPotjesSvg,
+  NavOverzichtSvg,
+  NavBackSvg,
+  NavSettingsSvg,
+  type BudgetSvgProps,
+} from './svg';

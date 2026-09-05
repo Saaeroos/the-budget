@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="sgr-trophy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E9AE3C"/>
+      <stop offset="100%" stop-color="#C98A0E"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="#0E1116"/>
+  <rect x="2" y="2" width="116" height="116" rx="26" stroke="#232833" stroke-width="2"/>
+  <!-- Radiant halo -->
+  <circle cx="60" cy="56" r="38" fill="#C98A0E" fill-opacity="0.12"/>
+  <!-- Trophy Cup -->
+  <path d="M42 34h36v22c0 10-8 18-18 18s-18-8-18-18V34z" fill="url(#sgr-trophy)" stroke="#9A6300" stroke-width="2.5"/>
+  <!-- Trophy Handles -->
+  <path d="M42 40H34a6 6 0 0 0-6 6v4a6 6 0 0 0 6 6h8" stroke="#E9AE3C" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M78 40h8a6 6 0 0 1 6 6v4a6 6 0 0 1-6 6h-8" stroke="#E9AE3C" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <!-- Stem & Base -->
+  <rect x="56" y="74" width="8" height="12" fill="#9A6300"/>
+  <rect x="46" y="86" width="28" height="8" rx="3" fill="url(#sgr-trophy)" stroke="#9A6300" stroke-width="2"/>
+  <!-- Star on cup -->
+  <polygon points="60,44 62,50 68,50 63,54 65,60 60,56 55,60 57,54 52,50 58,50" fill="#FFFFFF"/>
+  <!-- Confetti bits -->
+  <rect x="28" y="26" width="5" height="3" rx="1" fill="#3FBFA3" transform="rotate(24 28 26)"/>
+  <rect x="88" y="24" width="5" height="3" rx="1" fill="#E0665C" transform="rotate(-30 88 24)"/>
+  <rect x="92" y="68" width="4" height="4" rx="1" fill="#7ED8C3" transform="rotate(45 92 68)"/>
+  <rect x="24" y="70" width="4" height="4" rx="1" fill="#E9AE3C" transform="rotate(15 24 70)"/>
+</svg>

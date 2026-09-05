@@ -11,6 +11,8 @@ import { DatabaseProvider } from '@/providers/DatabaseProvider';
 import { SyncProvider } from '@/providers/SyncProvider';
 import { DevBanner } from '@/providers/DevBanner';
 
+import { useIsOnboardingCompleted } from '@/features/onboarding';
+
 /* ── Text ─────────────────────────────────────────────── */
 // (none — route composition only)
 
@@ -25,23 +27,26 @@ const rootStackScreenOptions = ({ route }: { route: { name: string } }) => ({
 });
 
 /**
- * `docs/05` §2 route tree, gated by session (`docs/24` §2: the dev bypass
- * signs in before this ever renders, so it takes the same authenticated
- * branch as a real user — the bypass skips `(auth)`, not the authorisation).
+ * `docs/05` §2 route tree, gated by onboarding completion and session.
+ * Unauthenticated and first-time users land directly in `(onboarding)` first.
+ * The auth screen is reached at the end of onboarding or via "Ik heb al een account".
  */
 function RootNavigator() {
   const { isLoading, session } = useAuth();
+  const isOnboardingCompleted = useIsOnboardingCompleted();
   if (isLoading) return null;
 
   return (
     <>
       <DevBanner />
       <Stack screenOptions={rootStackScreenOptions}>
+        <Stack.Protected guard={!isOnboardingCompleted}>
+          <Stack.Screen name="(onboarding)" />
+        </Stack.Protected>
         <Stack.Protected guard={!session}>
           <Stack.Screen name="(auth)" />
         </Stack.Protected>
-        <Stack.Protected guard={!!session}>
-          <Stack.Screen name="(onboarding)" />
+        <Stack.Protected guard={isOnboardingCompleted && !!session}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="budget" />
           <Stack.Screen name="rekeningen" />

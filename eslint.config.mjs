@@ -2,7 +2,7 @@ import expoConfig from 'eslint-config-expo/flat.js';
 
 export default [
   ...expoConfig,
-  { ignores: ['node_modules/**', '**/node_modules/**', '.expo/**', 'dist/**', 'scripts/**', '**/*.gen.ts'] },
+  { ignores: ['node_modules/**', '**/node_modules/**', '**/.expo/**', 'dist/**', 'scripts/**', '**/*.gen.ts'] },
   {
     files: ['**/*.ts', '**/*.tsx'],
     rules: {

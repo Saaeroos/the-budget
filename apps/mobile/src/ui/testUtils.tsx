@@ -5,6 +5,7 @@
 // new `test-renderer` root), so this — and every test that calls it — awaits it too.
 import { render, type RenderResult } from '@testing-library/react-native';
 import type { ReactElement } from 'react';
+import { I18nProvider } from '@/i18n';
 import { ThemeProvider, type ThemeOverride } from './ThemeProvider';
 
 /* ── Types ────────────────────────────────────────────── */
@@ -16,5 +17,9 @@ export interface RenderThemedOptions {
 /* ── Implementation ───────────────────────────────────── */
 
 export function renderThemed(ui: ReactElement, { override }: RenderThemedOptions = {}): Promise<RenderResult> {
-  return render(<ThemeProvider override={override}>{ui}</ThemeProvider>);
+  return render(
+    <I18nProvider locale="nl">
+      <ThemeProvider override={override}>{ui}</ThemeProvider>
+    </I18nProvider>,
+  );
 }
